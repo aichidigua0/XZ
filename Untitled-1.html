@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新竹伴你学考试播报系统</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #2980b9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', '微软雅黑', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        input {
+            padding: 12px 20px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+
+        button {
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="team-logo.png" alt="团队logo" class="logo"> <!-- 请替换实际logo路径 -->
+        <h1>新竹伴你学考试播报系统</h1>
+        <form class="login-form" onsubmit="return validateCode(event)">
+            <input type="text" placeholder="请输入登录码" id="accessCode" required>
+            <button type="submit">进入系统</button>
+        </form>
+    </div>
+
+    <script>
+        function validateCode(event) {
+            event.preventDefault();
+            const validCodes = ['XZCZR00', 'XZWCL60'];
+            const inputCode = document.getElementById('accessCode').value.trim().toUpperCase();
+
+            if (validCodes.includes(inputCode)) {
+                window.location.href = 'success.html'; // 跳转到成功页面
+                return true;
+            } else {
+                alert('登录码错误，请检查后重新输入');
+                document.getElementById('accessCode').value = '';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

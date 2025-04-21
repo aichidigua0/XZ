@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .countdown {
+            background-color: #000;
+            color: #055c96;
+            font-size: 2.5rem;
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 0 10px #055c96;
+        }
+
+        .menu-item {
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            color: #055c96;
+        }
+
+        .option-btn {
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .small-blackboard {
+            background-image: url('background.png');
+            background-size:100%;width: 500px;
+            color: white;
+        }
+    </style>
+    <title>新竹伴你学考试播报系统</title>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <!-- 菜单栏 -->
+    <div class="bg-blue-900 py-3 px-5 flex items-center">
+        <img src="team-logo.png" alt="团队logo" class="h-20 w-20 mr-4">
+        <h1 class="text-3xl font-bold text-white">新竹伴你学考试播报系统</h1>
+        <div class="ml-auto flex space-x-6">
+            <a href="#" class="menu-item">考场监考</a>
+            <a href="#" id="exam-broadcast" class="menu-item">考试播报</a>
+            <a href="#" class="menu-item">考试信息</a>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="p-6">
+        <div class="flex justify-between">
+            <!-- 倒计时 -->
+            <div class="countdown">
+                <span id="countdown-display">00:00</span>
+            </div>
+            <!-- 选项区域 -->
+            <div class="flex flex-col space-y-3">
+                <div class="flex flex-col space-y-2">
+                    <button id="prepare-exam" class="option-btn bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded">准备考试</button>
+                    <button id="exam-1" class="option-btn bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">开始考试-江苏专转本公共课</button>
+                    <button id="exam-2" class="option-btn bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">开始考试-江苏专转本专业课理论</button>
+                    <button id="exam-3" class="option-btn bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">开始考试-江苏专转本专业课实操</button>
+                    <button id="exam-4" class="option-btn bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">开始考试-全国硕士研究生招生考试</button>
+                </div>
+                <!-- 小黑板区域 -->
+                <div class="small-blackboard h-20 flex items-center justify-center text-2xl">
+                    <p>考试科目：江苏专转本</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 滚动字幕 -->
+    <div class="bg-blue-900 py-2">
+        <marquee behavior="scroll" direction="left">考试时，考生根据时间安排提前进入会场，并打开摄像头做好参考准备，用电脑登会，摄像头位置对准你的试卷和双手就行，不需要对准脸。
+            考试过程严格按照真实考试标准，特别注意开始答题根据铃声提示再答题，否则按不及格处理，考前准备好2b铅笔、黑色墨水签字笔等相关文具，严格按标准答题，考试过程中将有两名监考人员全程监考并做记录，开考后请严格遵循考试规则。结束答题铃声响起，请立即停止答题，并将你的答题卡清晰、正确拍照至此微信群，考试前请自行准备好草稿纸，按照最新省教育厅安排，机械专业可携带不带有记忆功能的计算器。
+            考卷及答题卡将按照流程进行发放，请在此期间自行打印</marquee>
+    </div>
+
+    <script>
+        const countdownDisplay = document.getElementById('countdown-display');
+        const prepareExamBtn = document.getElementById('prepare-exam');
+        const exam1Btn = document.getElementById('exam-1');
+        const exam2Btn = document.getElementById('exam-2');
+        const exam3Btn = document.getElementById('exam-3');
+        const exam4Btn = document.getElementById('exam-4');
+
+        let countdownInterval;
+        let bell0 = new Audio('bell0.mp3');
+        let bell1 = new Audio('bell1.mp3');
+        let bell2 = new Audio('bell2.mp3');
+        let bell3 = new Audio('bell3.mp3');
+
+        function startCountdown(duration) {
+            clearInterval(countdownInterval);
+            let timeLeft = duration * 80;
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 80);
+                const seconds = timeLeft % 80;
+                countdownDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (timeLeft > 0) {
+                    timeLeft--;
+                } else {
+                    clearInterval(countdownInterval);
+                    bell2.play();
+                }
+            }, 1000);
+        }
+
+        prepareExamBtn.addEventListener('click', () => {
+            bell0.play();
+            setTimeout(() => {
+                bell3.play();
+                bell3.loop = true;
+                setTimeout(() => {
+                    bell3.pause();
+                    bell3.currentTime = 0;
+                }, 8 * 60 * 1000);
+            }, 1 * 60 * 1000);
+        });
+
+        exam1Btn.addEventListener('click', () => {
+            bell1.play();
+            startCountdown(120);
+        });
+
+        exam2Btn.addEventListener('click', () => {
+            bell1.play();
+            startCountdown(100);
+        });
+
+        exam3Btn.addEventListener('click', () => {
+            bell1.play();
+            startCountdown(90);
+        });
+
+        exam4Btn.addEventListener('click', () => {
+            bell1.play();
+            startCountdown(180);
+        });
+    </script>
+</body>
+
+</html>
+    
